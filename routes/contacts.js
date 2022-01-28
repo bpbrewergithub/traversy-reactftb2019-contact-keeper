@@ -32,9 +32,34 @@ router.get('/', auth, async (req, res) => {
 // @description      Add new user contact
 // @access           Private
 
-router.post('/', (req, res) => {
-  res.send('Add new user contact');
-});
+router.post('/',
+  [ auth,
+    [
+      check('name', 'Name is required').not().isEmpty()
+    ] 
+  ],
+  async (req, res) => {
+    // Check for errors and return an array of the errors if there are any
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Destructure from the request object
+    const { name, email, phone, type } = req.body;
+
+    try {
+      const newContact = new Contact({ name, email, phone, type, user: req.user.id });
+
+      const contact = await newContact.save();
+
+      res.json(contact);
+    } catch (error) {
+      console.error(error.message);
+      res.status(500).send('Server error');
+    }
+  }
+);
 
 // @route            PUT api/contacts/:id
 // @description      Update user contact
