@@ -10,8 +10,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 // Import/require the config file
 const config = require('config');
-
-
+// Import/require the User model
 const User = require('../models/User');
 
 // @route            POST api/users
@@ -64,7 +63,7 @@ router.post('/',
           id: user.id
         }
       }
-
+      // Sign and set an expiration for the jwt
       jwt.sign(payload, config.get('jwtSecret'), {
         expiresIn: 360000
       }, (err, token) => {
