@@ -1,6 +1,14 @@
+// Import/require express module
 const express = require('express');
 
+// Import/require the database connection config file
+const connectDB = require('./config/db');
+
+// Instantiate an express app
 const app = express();
+
+// Connect the database
+connectDB();
 
 app.get('/', (req, res) => res.json({ msg: 'Welcome to the Contact Keeper API'}));
 
