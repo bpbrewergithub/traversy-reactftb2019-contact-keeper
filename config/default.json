@@ -1,3 +1,4 @@
 {
-  "mongoURI": "mongodb+srv://bendev:BenDevPassword@cluster0.7xdtn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+  "mongoURI": "mongodb+srv://bendev:BenDevPassword@cluster0.7xdtn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+  "jwtSecret": "secret"
 }

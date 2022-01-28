@@ -6,6 +6,11 @@ const router = express.Router();
 const { check, validationResult } = require('express-validator');
 // Import/require bcrypt
 const bcrypt = require('bcryptjs');
+// Import/require JWT
+const jwt = require('jsonwebtoken');
+// Import/require the config file
+const config = require('config');
+
 
 const User = require('../models/User');
 
@@ -53,7 +58,19 @@ router.post('/',
       // Save the user to the database
       await user.save();
 
-      res.send('User saved');
+      // Create a JWT payload
+      const payload = {
+        user: {
+          id: user.id
+        }
+      }
+
+      jwt.sign(payload, config.get('jwtSecret'), {
+        expiresIn: 360000
+      }, (err, token) => {
+        if(err) throw err;
+        res.json({ token });
+      });
 
     } catch (error) {
       console.error(error.message);
